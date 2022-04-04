@@ -9,3 +9,11 @@ share/
 ssl/
 x86_64-conda-linux-gnu/
 x86_64-conda_cos6-linux-gnu/
+__pycache__
+
+# Ignore .env file (containing the bot token)
+.env
+
+# Ignore the content of logs directory 
+logs/*
+!logs/.placeholder
