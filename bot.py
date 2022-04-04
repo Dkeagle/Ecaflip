@@ -1,6 +1,6 @@
-# Importing python libraries
 import os
 import discord
+from discord.ext import commands
 from dotenv import load_dotenv
 
 # Importing bot modules
@@ -12,15 +12,15 @@ load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 
 # Create the bot client
-client = discord.Client()
+bot = commands.Bot(command_prefix=PREFIX)
 
-@client.event
+@bot.event
 async def on_ready():
     log(f"{NAME} is online!")
 
-@client.event
+@bot.event
 async def on_message(message):
-    if message.author == client.user:
+    if message.author == bot.user:
         return
     if message.content.startswith(PREFIX):
         splitted = message.content.split()
@@ -28,7 +28,18 @@ async def on_message(message):
             log(f"{splitted[0]} {splitted[1:]}", message.channel.name, message.author)
         else:
             log(f"{splitted[0]}", message.channel.name, message.author)
+        await bot.process_commands(message)
+
+@bot.event
+async def on_command_error(ctx, error):
+    splitted = ctx.message.content.split()
+    text = f"{splitted[0]}: Unknown command!"
+    await ctx.send(text)
+    log(text, channel=ctx.message.channel.name, user=ctx.message.author, level="ERROR")
+
+# Load extensions handler
+bot.load_extension("dice")
 
 # Start the bot
 if __name__ == "__main__":
-    client.run(TOKEN)
+    bot.run(TOKEN)
