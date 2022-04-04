@@ -1,14 +1,17 @@
 # Importing python libraries
 from datetime import datetime
 
+# Importing bot modules
+from config import NAME
+
 # Functions
 def time():
     return datetime.now().strftime("[%Y/%m/%d %H:%M:%S.%f]")
 
-def log(message):
-    print(f"{time()}: {message}")
+def log(message, channel="None", user=NAME):
+    print(f"{time()}: #{channel}: @{user}: {message}")
     with open("logs/{}.log".format(log_file_name),"a") as lf:
-        lf.write(f"{time()}: {message}\n")
+        lf.write(f"{time()}: #{channel}: @{user}: {message}\n")
 
 def not_alone():
     log("This module is part of the Ecaflip Discord Bot Project and should not be used alone, please use bot.py")
