@@ -33,10 +33,11 @@ async def on_message(message):
 @bot.event
 async def on_command_error(ctx, error):
     splitted = ctx.message.content.split()
+    text = f"{error}: Unkown error"
     if isinstance(error, commands.CommandNotFound):
-        text = f"{splitted[0]}: Unknown command!"
+        text = f"{splitted[0]}: Unknown command"
     elif isinstance(error, commands.MissingPermissions):
-        text = f"{splitted[0]}: You're not allowed to execute this command!"
+        text = f"{splitted[0]}: You're not allowed to execute this command"
     await ctx.send(text)
     log(text, channel=ctx.message.channel.name, user=ctx.message.author, level="WARN")
 
@@ -53,10 +54,25 @@ async def logout(ctx):
 @bot.command()
 @commands.has_permissions(administrator=True)
 async def reload(ctx):
-    bot.reload_extension("dice")
+    bot.reload_extension("extensions")
+
+@bot.command()
+@commands.has_permissions(administrator=True)
+async def unload(ctx):
+    splitted = ctx.message.content.split()
+    if len(splitted) == 1:
+        return
+    else:
+        for ext in splitted[1:]:
+            try:
+                bot.unload_extension(ext)
+            except Exception as err:
+                log(f"{ext} module not unloaded! ({err})", level="ERROR")
+            else:
+                log(f"{ext} module unloaded!", level="INFO")
 
 # Load extensions
-bot.load_extension("dice")
+bot.load_extension("extensions")
 
 # Start the bot
 if __name__ == "__main__":
