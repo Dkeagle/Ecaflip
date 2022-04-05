@@ -4,8 +4,8 @@ from discord.ext import commands
 from dotenv import load_dotenv
 
 # Importing bot modules
-from config import PREFIX, NAME
-from log import log
+from modules.config import PREFIX, NAME
+from modules.log import log
 
 # Load environment variables
 load_dotenv()
@@ -54,7 +54,7 @@ async def logout(ctx):
 @bot.command()
 @commands.has_permissions(administrator=True)
 async def reload(ctx):
-    bot.reload_extension("extensions")
+    bot.reload_extension("modules.extensions")
 
 @bot.command()
 @commands.has_permissions(administrator=True)
@@ -63,16 +63,17 @@ async def unload(ctx):
     if len(splitted) == 1:
         return
     else:
-        for ext in splitted[1:]:
+        for extension in splitted[1:]:
+            ext = f"modules.{extension}"
             try:
                 bot.unload_extension(ext)
             except Exception as err:
-                log(f"{ext} module not unloaded! ({err})", level="ERROR")
+                log(f"{ext} not unloaded! ({err})", level="ERROR")
             else:
-                log(f"{ext} module unloaded!", level="INFO")
+                log(f"{ext} unloaded!", level="INFO")
 
 # Load extensions
-bot.load_extension("extensions")
+bot.load_extension("modules.extensions")
 
 # Start the bot
 if __name__ == "__main__":

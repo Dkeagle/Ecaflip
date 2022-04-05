@@ -1,7 +1,7 @@
 from datetime import datetime
 
 # Importing bot modules
-from config import NAME
+from .config import NAME
 
 # Functions
 def time():
@@ -23,7 +23,7 @@ def not_alone():
 
 # Code
 log_file_name = datetime.now().strftime('%Y%m%d-%H%M%S')
-log(f"{__name__} module loaded!", level="INFO")
+log(f"{__name__} loaded!", level="INFO")
 
 # Block execution of this file alone
 if __name__ == "__main__":
