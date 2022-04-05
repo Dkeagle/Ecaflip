@@ -14,9 +14,10 @@ TOKEN = os.getenv('DISCORD_TOKEN')
 # Create the bot client
 bot = commands.Bot(command_prefix=PREFIX)
 
+# Event Handlers
 @bot.event
 async def on_ready():
-    log(f"{NAME} is online!")
+    log(f"{NAME} logged in!", level="INFO")
 
 @bot.event
 async def on_message(message):
@@ -37,7 +38,17 @@ async def on_command_error(ctx, error):
     await ctx.send(text)
     log(text, channel=ctx.message.channel.name, user=ctx.message.author, level="ERROR")
 
-# Load extensions handler
+@bot.event
+async def on_disconnect():
+    log(f"{NAME} logged out!", level="INFO")
+
+# Commands
+@bot.command()
+@commands.has_permissions(administrator=True)
+async def logout(ctx):
+    await bot.close()
+
+# Load extensions
 bot.load_extension("dice")
 
 # Start the bot
