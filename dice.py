@@ -6,7 +6,7 @@ from log import log, not_alone
 # Commands
 @commands.command(name="d6", help="Roll a d6")
 async def d6(ctx):
-    await ctx.send("Hello!")
+    await ctx.send("Hello World!")
 
 # Code
 def setup(bot):

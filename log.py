@@ -13,7 +13,7 @@ def log(message, channel=None, user=NAME, level="DEFAULT"):
         log("Incorrect log level, please fix next command logging level", channel=None, user=NAME, level="ERROR")
         level="ERROR"
 
-    text = f"{levels[level]}{time()}: #{channel}: @{user}: {message}" 
+    text = f"{levels['DEFAULT']}{time()}:{levels[level]} #{channel}: @{user}: {message}" 
     print(text)
     with open("logs/{}.log".format(log_file_name),"a") as lf:
         lf.write(f"{text}\n")
