@@ -23,7 +23,7 @@ def not_alone():
 
 # Code
 log_file_name = datetime.now().strftime('%Y%m%d-%H%M%S')
-log(f"{__name__} module loaded!")
+log(f"{__name__} module loaded!", level="INFO")
 
 # Block execution of this file alone
 if __name__ == "__main__":

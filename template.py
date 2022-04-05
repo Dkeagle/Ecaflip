@@ -13,7 +13,7 @@ async def name(ctx):
 def setup(bot):
     bot.add_command(name)
 
-log(f"{__name__} module loaded!")
+log(f"{__name__} module loaded!", level="INFO")
 
 # Block execution of this file alone
 if __name__ == "__main__":

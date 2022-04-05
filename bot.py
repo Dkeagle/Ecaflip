@@ -12,7 +12,7 @@ load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 
 # Create the bot client
-bot = commands.Bot(command_prefix=PREFIX)
+bot = commands.Bot(command_prefix=commands.when_mentioned_or(PREFIX))
 
 # Event Handlers
 @bot.event
@@ -23,20 +23,22 @@ async def on_ready():
 async def on_message(message):
     if message.author == bot.user:
         return
-    if message.content.startswith(PREFIX):
-        splitted = message.content.split()
-        if len(splitted) >= 2:
-            log(f"{splitted[0]} {splitted[1:]}", message.channel.name, message.author)
-        else:
-            log(f"{splitted[0]}", message.channel.name, message.author)
-        await bot.process_commands(message)
+    splitted = message.content.split()
+    if len(splitted) >= 2:
+        log(f"{splitted[0]} {splitted[1:]}", message.channel.name, message.author)
+    else:
+        log(f"{splitted[0]}", message.channel.name, message.author)
+    await bot.process_commands(message)
 
 @bot.event
 async def on_command_error(ctx, error):
     splitted = ctx.message.content.split()
-    text = f"{splitted[0]}: Unknown command!"
+    if isinstance(error, commands.CommandNotFound):
+        text = f"{splitted[0]}: Unknown command!"
+    elif isinstance(error, commands.MissingPermissions):
+        text = f"{splitted[0]}: You're not allowed to execute this command!"
     await ctx.send(text)
-    log(text, channel=ctx.message.channel.name, user=ctx.message.author, level="ERROR")
+    log(text, channel=ctx.message.channel.name, user=ctx.message.author, level="WARN")
 
 @bot.event
 async def on_disconnect():
