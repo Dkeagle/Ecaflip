@@ -50,6 +50,11 @@ async def on_disconnect():
 async def logout(ctx):
     await bot.close()
 
+@bot.command()
+@commands.has_permissions(administrator=True)
+async def reload(ctx):
+    bot.reload_extension("dice")
+
 # Load extensions
 bot.load_extension("dice")
 
