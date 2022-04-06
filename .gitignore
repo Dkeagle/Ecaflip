@@ -17,3 +17,6 @@ __pycache__
 # Ignore the content of logs directory 
 logs/*
 !logs/.placeholder
+
+# Ignore .json file as they're used to store data
+*.json

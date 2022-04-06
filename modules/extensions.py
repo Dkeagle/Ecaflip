@@ -4,7 +4,7 @@ from discord.ext import commands
 from .log import log, not_alone
 
 # Code
-extensions = ["dice"]
+extensions = ["dice", "hangman"]
 load_list = [f"modules.{ext}" for ext in extensions]
 reload_list = []
 

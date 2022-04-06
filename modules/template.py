@@ -1,12 +1,11 @@
 from discord.ext import commands
 
 # Importing bot modules
-from .log import log, not_alone
+from .log import not_alone
 
 # Commands
 @commands.command(name="", help="")
 async def name(ctx):
-    # Command code here
     await ctx.send("Hello World!")
 
 # Code

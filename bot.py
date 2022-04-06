@@ -20,26 +20,28 @@ async def on_ready():
     log(f"{NAME} logged in!", level="INFO")
 
 @bot.event
-async def on_message(message):
-    if message.author == bot.user:
+async def on_command(ctx):
+    if ctx.message.author == bot.user:
         return
-    splitted = message.content.split()
+    splitted = ctx.message.content.split()
     if len(splitted) >= 2:
-        log(f"{splitted[0]} {splitted[1:]}", message.channel.name, message.author)
+        log(f"{splitted[0]} {splitted[1:]}", ctx.message.channel.name, ctx.message.author)
     else:
-        log(f"{splitted[0]}", message.channel.name, message.author)
-    await bot.process_commands(message)
+        log(f"{splitted[0]}", ctx.message.channel.name,ctx.message.author)
 
 @bot.event
 async def on_command_error(ctx, error):
     splitted = ctx.message.content.split()
-    text = f"{error}: Unkown error"
+    text = f"{error}"
+    lvl = "ERROR"
     if isinstance(error, commands.CommandNotFound):
         text = f"{splitted[0]}: Unknown command"
+        lvl = "WARN"
     elif isinstance(error, commands.MissingPermissions):
         text = f"{splitted[0]}: You're not allowed to execute this command"
+        lvl = "WARN"
     await ctx.send(text)
-    log(text, channel=ctx.message.channel.name, user=ctx.message.author, level="WARN")
+    log(text, channel=ctx.message.channel.name, user=ctx.message.author, level=lvl)
 
 @bot.event
 async def on_disconnect():
